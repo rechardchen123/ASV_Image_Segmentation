@@ -133,4 +133,4 @@ dataset/
 weights/
 result_pics/
 *.pth
-
+.idea/
