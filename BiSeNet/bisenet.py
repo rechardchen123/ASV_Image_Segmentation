@@ -128,15 +128,25 @@ class BiSeNet_model(torch.nn.Module):
 
     def forward(self, input):
         sp = self.saptial_path(input)
+        print('sp shape:', sp.shape)
         cx1, cx2, tail = self.context_path(input)
+        print('cx1 shape:', cx1.shape)
+        print('cx2 shape:', cx2.shape)
+        print('tail shape:', tail.shape)
 
         cx1 = self.attention_refinement_module1(cx1)
+        print('cx1 shape after ARM1:', cx1.shape)
         cx2 = self.attention_refinement_module2(cx2)
+        print('cx2 shape after ARM2:', cx2.shape)
         cx2 = torch.mul(cx2, tail)
+        print('cx2 shape after mul:', cx2.shape)
 
         cx1 = torch.nn.functional.interpolate(cx1, size=sp.size()[-2:], mode='bilinear')
+        print('cx1 shape after interpol:', cx1.shape)
         cx2 = torch.nn.functional.interpolate(cx2, size=sp.size()[-2:], mode='bilinear')
+        print('cx2 shape after interpol:', cx2.shape)
         cx = torch.cat((cx1, cx2), dim=1)
+        print('cx shape after concat:', cx.shape)
 
         if self.training == True:
             cx1_sup = self.supervision1(cx1)
@@ -145,10 +155,13 @@ class BiSeNet_model(torch.nn.Module):
             cx2_sup = torch.nn.functional.interpolate(cx2_sup, size=input.size()[-2:], mode='bilinear')
 
         result = self.feature_fusion_module(sp, cx)
+        print('result shape:', result.shape)
 
         result = torch.nn.functional.interpolate(result, size=input.size()[-2:], mode='bilinear')
+        print('result shape after interpol:', result.shape)
 
         result = self.conv(result)
+        print('final result shape:', result.shape)
 
         if self.training == True:
             return result, cx1_sup, cx2_sup
@@ -162,4 +175,5 @@ if __name__ == '__main__':
     rgb = t.randn(1, 3, 352, 480)
     net = BiSeNet_model(19).eval()
     out = net(rgb)
+
 
