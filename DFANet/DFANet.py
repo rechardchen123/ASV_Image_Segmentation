@@ -10,6 +10,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from thop import profile
 
 
 class SeparableConv2d(nn.Module):
@@ -322,9 +323,13 @@ def load_backbone(dfanet, backbone_path):
 
 
 if __name__ == '__main__':
+    import torch as t
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     ch_cfg = [[8, 48, 96],
               [240, 144, 288],
               [240, 144, 288]]
     model = DFANet(ch_cfg, 64, 19)
+    rgb = t.randn(1, 3, 352, 480)
     model.eval()
+    flops, params = profile(model, (rgb,))
+    print('flops: ', flops, 'params: ', params)

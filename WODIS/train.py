@@ -29,16 +29,16 @@ ASV_val = ASV_ImageDataSet([cfg.VAL_ROOT, cfg.VAL_LABEL], cfg.crop_size)
 train_data = DataLoader(ASV_train, batch_size=cfg.BATCH_SIZE, shuffle=True, num_workers=4)
 val_data = DataLoader(ASV_val, batch_size=cfg.BATCH_SIZE, shuffle=True, num_workers=4)
 
-wodis = WODIS_model( is_training=True, num_classes=3)
+
+wodis = WODIS_model(is_training=True, num_classes=3)
 wodis = wodis.to(device)
 criterion = nn.NLLLoss().to(device)
 optimizer = optim.Adam(wodis.parameters(), lr=1e-4)
 
 
-def train(model):
+def train(model, resume=False):
     best = [0]
     net = model.train()
-    # training rounds
     for epoch in range(cfg.EPOCH_NUMBER):
         print('Epoch is [{}/{}]'.format(epoch + 1, cfg.EPOCH_NUMBER))
         if epoch % 50 == 0 and epoch != 0:
@@ -85,7 +85,7 @@ def train(model):
         print(metric_description)
         if max(best) <= train_miou / len(train_data):
             best.append(train_miou / len(train_data))
-            t.save(net.state_dict(), '{}.pth'.format(epoch))
+            t.save(net.state_dict(), './weights/{}.pth'.format(epoch))
 
 
 def evaluate(model):
@@ -130,4 +130,4 @@ def evaluate(model):
 
 
 if __name__ == '__main__':
-    train(wodis)
+    train(wodis, resume=False)

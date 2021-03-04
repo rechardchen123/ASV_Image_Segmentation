@@ -9,6 +9,7 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
+from thop import profile
 
 F = nn.functional
 DEBUG = False
@@ -389,3 +390,12 @@ class SegNet(nn.Module):
         self.encoder_conv_42[0].weight.data = self.vgg16.features[28].weight.data
         assert self.encoder_conv_42[0].bias.size() == self.vgg16.features[28].bias.size()
         self.encoder_conv_42[0].bias.data = self.vgg16.features[28].bias.data
+
+if __name__ == '__main__':
+    import torch as t
+
+    rgb = t.randn(1, 3, 352, 480)
+    net = SegNet(3, 3).eval()
+    out = net(rgb)
+    flops, params = profile(net, (rgb,))
+    print('flops: ', flops, 'params: ', params)

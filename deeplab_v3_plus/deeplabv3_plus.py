@@ -10,6 +10,7 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from thop import profile
 
 
 def fixed_padding(inputs, kernel_size, dilation):
@@ -355,3 +356,5 @@ if __name__ == "__main__":
     image = torch.randn(1, 3, 352, 480)
     output = model(image)
     print(output.size())
+    flops, params = profile(model, (image,))
+    print('flops: ', flops, 'params: ', params)

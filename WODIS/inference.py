@@ -29,7 +29,7 @@ def main():
     create the model and start the inference...
     '''
     # load model
-    net = WODIS_model(cfg.NUM_CLASSES).to(device)
+    net = WODIS_model(is_training=False, num_classes=cfg.NUM_CLASSES).to(device)
     checkpoint = t.load(cfg.MODEL_WEIGHTS, map_location='cpu')
     net.load_state_dict(checkpoint)
     pd_label_color = pd.read_csv(cfg.class_dict_path, sep=',')
@@ -76,7 +76,7 @@ def main():
         # inference starting...
         start_time = time.time()
         valImg = img_out.to(device)
-        out, cx1, cx2 = net(valImg)
+        out, cx1 = net(valImg)
         elapsed_time = time.time() - start_time
         sum_times += elapsed_time
         print('Elapsed time: %.04f for image num %03d' % (elapsed_time, counter))

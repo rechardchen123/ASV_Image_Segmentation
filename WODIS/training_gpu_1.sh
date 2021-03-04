@@ -5,10 +5,8 @@
 #$ -S /bin/bash
 
 #1. Request a number of GPU cards, in this case 1
-#$ -l gpu=2
+#$ -l gpu=1
 
-# request a V100 node only
-#$ -ac allow=EF
 
 #2. Request half hour of wallclock time (format hours:minutes:second).
 #$ -l h_rt=10:00:0

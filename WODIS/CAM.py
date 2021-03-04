@@ -12,7 +12,7 @@ import torchvision.transforms as transforms
 import numpy as np
 from PIL import Image
 import cv2
-from WODIS.WODIS import WODIS_model
+from WODIS import WODIS_model
 
 '''
 The class activation map (CAM) and heat map 
@@ -59,3 +59,4 @@ if __name__ == '__main__':
     conv_features = hook_ref.features
     print('output shape', conv_features.shape)
     hook_ref.remove()
+    show_feature_map(img_file, conv_features)

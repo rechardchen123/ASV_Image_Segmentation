@@ -4,12 +4,6 @@
 # 0. Force bash as the executing shell.
 #$ -S /bin/bash
 
-#1. Request a number of GPU cards, in this case 1
-#$ -l gpu=2
-
-# request a V100 node only
-#$ -ac allow=EF
-
 #2. Request half hour of wallclock time (format hours:minutes:second).
 #$ -l h_rt=10:00:0
 
@@ -18,6 +12,9 @@
 
 #4. Request 15 gigabyte of TMPDIR space (default is 10 GB)
 #$ -l tmpfs=15G
+
+# Request 16 cores.
+#$ -pe smp 16
 
 #5. Set the name of the job.
 #$ -N ASV_WODIS
@@ -35,8 +32,8 @@ source activate pytorch
 #9.  load the cuda module
 module unload compilers
 module load compilers/gnu/4.9.2
-module load cuda/10.1.243/gnu-4.9.2
-module load cudnn/7.6.5.32/cuda-10.1
+#module load cuda/10.1.243/gnu-4.9.2
+#module load cudnn/7.6.5.32/cuda-10.1
 #10. Run job
 ./train.py
 

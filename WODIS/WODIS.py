@@ -10,6 +10,7 @@
 from torchvision import models
 import torch
 import torch.nn as nn
+from thop import profile
 
 
 class resnet101(nn.Module):
@@ -145,3 +146,7 @@ if __name__ == '__main__':
     rgb = t.randn(1, 3, 352, 480)
     net = WODIS_model(is_training=True, num_classes=3).eval()
     out = net(rgb)
+    flops, params = profile(net, (rgb,))
+    print('flops: ', flops, 'params: ', params)
+
+

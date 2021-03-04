@@ -9,6 +9,7 @@
 from torchvision import models
 import torch
 from torch import nn
+from thop import profile
 
 
 class resnet18(torch.nn.Module):
@@ -175,5 +176,7 @@ if __name__ == '__main__':
     rgb = t.randn(1, 3, 352, 480)
     net = BiSeNet_model(19).eval()
     out = net(rgb)
+    flops, params = profile(net, (rgb,))
+    print('flops: ', flops, 'params: ', params)
 
 
