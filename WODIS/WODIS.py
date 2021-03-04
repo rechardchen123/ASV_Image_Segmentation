@@ -147,6 +147,6 @@ if __name__ == '__main__':
     net = WODIS_model(is_training=True, num_classes=3).eval()
     out = net(rgb)
     flops, params = profile(net, (rgb,))
-    print('flops: ', flops, 'params: ', params)
+    print('flops: ', flops/(1000**3), 'params: ', params/(1000**2))
 
 

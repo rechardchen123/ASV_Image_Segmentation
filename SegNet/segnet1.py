@@ -398,4 +398,4 @@ if __name__ == '__main__':
     net = SegNet(3, 3).eval()
     out = net(rgb)
     flops, params = profile(net, (rgb,))
-    print('flops: ', flops, 'params: ', params)
+    print('flops: ', flops/(1000**3), 'params: ', params/(1000**2))

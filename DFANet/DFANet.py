@@ -332,4 +332,4 @@ if __name__ == '__main__':
     rgb = t.randn(1, 3, 352, 480)
     model.eval()
     flops, params = profile(model, (rgb,))
-    print('flops: ', flops, 'params: ', params)
+    print('flops: ', flops/(1000**3), 'params: ', params/(1000**2))

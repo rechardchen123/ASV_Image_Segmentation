@@ -357,4 +357,4 @@ if __name__ == "__main__":
     output = model(image)
     print(output.size())
     flops, params = profile(model, (image,))
-    print('flops: ', flops, 'params: ', params)
+    print('flops: ', flops / (1000 ** 3), 'params: ', params / (1000 ** 2))
