@@ -38,7 +38,9 @@ def show_feature_map(img_src, conv_features):
     heatmap /= np.max(heatmap)
     heatmap = cv2.resize(heatmap, (img.size[0], img.size[1]))
     heatmap = np.uint8(255 * heatmap)
-    heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+    #heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+    heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_HOT)
+
 
     superimg = heatmap*0.4 + np.array(img)[:,:,::-1]
     cv2.imwrite('./heatmap.jpg', superimg)
