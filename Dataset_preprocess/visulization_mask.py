@@ -11,8 +11,8 @@ import cv2
 '''
 Visualize the masks.
 '''
-imgfile = './00389.png'   #read the raw images
-pngfile = './output_mask_2.png'  #read the mask through the training network
+imgfile = '/home/richardchen123/Desktop/ground truth1/11.jpg'   #read the raw images
+pngfile = '/home/richardchen123/Desktop/ground truth1/mask_11.png'  #read the mask through the training network
 
 img = cv2.imread(imgfile, 1)
 mask = cv2.imread(pngfile, 0)
@@ -26,4 +26,5 @@ for c in contours:
 
 cv2.imshow('mask', mask)   # show the mask
 cv2.imshow('img', img)     # show the rect
+cv2.imwrite('bounding_box_11.jpg', img)
 cv2.waitKey(0)

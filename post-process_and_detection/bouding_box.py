@@ -12,6 +12,7 @@ import numpy as np
 '''
 After getting all the segmentation masks, the last step is to draw the bounding boxes for the obstacles. 
 '''
+raw_image = cv2.imread('/home/richardchen123/Desktop/object_detection_result/MaSTr1325/1.jpg')
 image = cv2.imread('/home/richardchen123/Desktop/object_detection_result/MaSTr1325/mask_1.png')
 img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 ret, thresh = cv2.threshold(img, 230, 255, cv2.THRESH_BINARY_INV)
