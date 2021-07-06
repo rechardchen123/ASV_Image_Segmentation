@@ -26,7 +26,7 @@ def cal_semantic_segmentation_confusion(pre_labels, gt_labels):
     pre_labels = iter(pre_labels)
     gt_labels = iter(gt_labels)
 
-    n_class = 3  # 分割的类别不同的时候需要修改
+    n_class = 3  # the segmentation categoires:[sea, sky, objects]
     confusion = np.zeros((n_class, n_class), dtype=np.int64)  # (3, 3)
     for pre_label, gt_label in zip(pre_labels, gt_labels):
         if pre_label.ndim != 2 or gt_label.ndim != 2:

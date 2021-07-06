@@ -13,16 +13,15 @@ import torch.nn as nn
 from thop import profile
 
 
-class resnet101(nn.Module):
+class baseline(nn.Module):
     """
-    The feature extraction model here uses the ResNet-101
-    and the model loaded from the Pytorch repositories.
+    The base feature extraction model here and the model loaded from the Pytorch repositories.
     """
 
     def __init__(self, pretrainined=True):
-        super(resnet101, self).__init__()
+        super(baseline, self).__init__()
         self.features = models.resnet101(pretrained=pretrainined)
-        self.features.load_state_dict(torch.load('./resnet101-5d3b4d8f.pth'))  # the resent-101 weight directory
+        self.features.load_state_dict(torch.load('./xception_model.pth'))  # the resent-101 weight directory
         self.conv1 = self.features.conv1
         self.bn1 = self.features.bn1
         self.relu = self.features.relu
@@ -36,10 +35,10 @@ class resnet101(nn.Module):
         x = self.conv1(input)
         x = self.relu(self.bn1(x))
         x = self.maxpool1(x)
-        feature1 = self.layer1(x)  # 1/4
-        feature2 = self.layer2(feature1)  # 1/8
-        feature3 = self.layer3(feature2)  # 1/16
-        feature4 = self.layer4(feature3)  # 1/32
+        feature1 = self.layer1(x)
+        feature2 = self.layer2(feature1)
+        feature3 = self.layer3(feature2)
+        feature4 = self.layer4(feature3)
         return feature1, feature2, feature3, feature4
 
 
@@ -118,7 +117,7 @@ class WODIS_model(nn.Module):
         :param num_classes: number of classes to predict(including background).
         '''
         super(WODIS_model, self).__init__()
-        self.encoder = resnet101(pretrainined=False)
+        self.encoder = baseline(pretrainined=False)
         self.arm1 = AttentionRefinementModule(2048, 2048)
         self.arm2 = AttentionRefinementModule(512, 512)
         self.ffm = FeatureFusionModule(num_classes, 3072)
@@ -143,10 +142,9 @@ class WODIS_model(nn.Module):
 
 if __name__ == '__main__':
     import torch as t
+
     rgb = t.randn(1, 3, 352, 480)
     net = WODIS_model(is_training=True, num_classes=3).eval()
     out = net(rgb)
     flops, params = profile(net, (rgb,))
-    print('flops: ', flops/(1000**3), 'params: ', params/(1000**2))
-
-
+    print('flops: ', flops / (1000 ** 3), 'params: ', params / (1000 ** 2))

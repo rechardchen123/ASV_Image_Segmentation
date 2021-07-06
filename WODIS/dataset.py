@@ -34,7 +34,7 @@ a dictionary 'sample = {'img': img, 'label': label}'. The data will be fed into 
 
 
 class LabelProcessor:
-    '''对标签进行编码'''
+    '''encoding for the each image label'''
 
     def __init__(self, file_path):
         self.colormap = self.read_color_map(file_path)
@@ -66,27 +66,27 @@ class LabelProcessor:
 class ASV_ImageDataSet(Dataset):
     def __init__(self, file_path=[], crop_size=None):
         '''
-        读取数据集并处理
-        :param file_path: 数据和标签的路径，第一个元素表示图片路径，第二个为标签路径
-        :param crop_zie: 裁剪的图像的大小
+        read the dataset and preprocessing
+        :param file_path: the data and label file location, respectively
+        :param crop_zie: cropping image size [width, height]
         '''
-        # 1. 正确读入图片和标签的路径
+        # 1. read the image and label file location
         if len(file_path) != 2:
-            raise ValueError('同时需要读入图片和标签文件夹的路径，图片的路径在前！')
+            raise ValueError('read the image and label file location...')
         self.img_path = file_path[0]
         self.label_path = file_path[1]
 
-        # 2. 从路径中取出图片和对应的mask的文件名保存在两个列表中
+        # 2. get the image and mask names
         self.imgs = self.read_file(self.img_path)
         self.labels = self.read_file(self.label_path)
 
-        # 3. 初始化数据处理函数的设置
+        # 3. initialise the settings
         self.crop_size = crop_size
 
     def __getitem__(self, item):
         img = self.imgs[item]
         label = self.labels[item]
-        # 从文件名中读取数据
+        # read the image from the image list.
         img = Image.open(img)
         label = Image.open(label).convert('RGB')
         img, label = self.center_crop(img, label, self.crop_size)
@@ -98,20 +98,19 @@ class ASV_ImageDataSet(Dataset):
         return len(self.imgs)
 
     def read_file(self, path):
-        '''从文件夹中读取数据'''
         files_list = os.listdir(path)
         file_path_list = [os.path.join(path, img) for img in files_list]
         file_path_list.sort()
         return file_path_list
 
     def center_crop(self, data, label, crop_size):
-        '''裁剪输入的图像和标签大小'''
+        """center cropping"""
         data = F.center_crop(data, crop_size)
         label = F.center_crop(label, crop_size)
         return data, label
 
     def img_transform(self, img, label):
-        '''对图片和标签数值处理'''
+        ''' preprocessing the image and labels'''
         label = np.array(label)
         label = Image.fromarray(label.astype('uint8'))
         transform_img = transforms.Compose([

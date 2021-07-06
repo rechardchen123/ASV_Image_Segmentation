@@ -24,10 +24,10 @@ miou_list = [0]
 ASV_test = ASV_ImageDataSet([cfg.TEST_ROOT, cfg.TEST_LABEL], cfg.crop_size)
 test_data = DataLoader(ASV_test, batch_size=BATCH_SIZE, shuffle=True, num_workers=4)
 
-net = WODIS_model(3)
+net = WODIS_model(False,3)
 net.eval()
 net.to(device)
-net.load_state_dict(t.load('xxx.pth'))  # 填上训练好的权重参数的地址
+net.load_state_dict(t.load('WODIS_weights.pth'))  # the trained weights
 
 train_acc = 0
 train_miou = 0

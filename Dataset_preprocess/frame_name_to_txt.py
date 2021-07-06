@@ -11,10 +11,10 @@ import os
 '''
 In order to train the model, we need to save all the image and label name into one txt file.
 '''
-names= os.listdir('/home/richardchen123/Desktop/VIS_Onboard/video_frames/video_frame_11/frames')
+names= os.listdir('/home/xchen/Desktop/ASV_Image_Segmentation/WODIS/dataset/test')
 names.sort(key=lambda x:int(x[:-4]))
 print(names[:9])
-image_ids = open('/home/richardchen123/Desktop/VIS_Onboard/video_frames/video_frame_11/frame_name.txt', 'w')
+image_ids = open('/home/xchen/Desktop/ASV_Image_Segmentation/WODIS/dataset/frame_name.txt', 'w')
 for name in names:
     image_ids.write('%s\n' % (name))
 
