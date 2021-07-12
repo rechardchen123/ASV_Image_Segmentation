@@ -22,7 +22,7 @@ The training models for this paper can be downloaded here:
 
 - [Xception weights](https://pan.baidu.com/s/1RTdHD5owLZr1vshrSPhlQA), passowrd: `1i98`
 - [trained weights](https://pan.baidu.com/s/1a-EK6OMoU2IQjLO8r0n7EA) , password: `ec22`
-Option, you can use the link from Google Drive to download the weights:
+- Option, you can use the link from Google Drive to download the weights:
 - [weights](https://drive.google.com/drive/folders/1T2DaXTaQ_F-Ui48IYWAE86NJ6ct4rhWq?usp=sharing)
 
 
